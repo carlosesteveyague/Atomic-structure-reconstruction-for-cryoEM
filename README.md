@@ -1,4 +1,4 @@
-# Atomic-structure-reconstruction-for-cryoEM
+# Atomic structure reconstruction for cryo-EM
 
 Code used for the numerical experiments in the preprint 
 
