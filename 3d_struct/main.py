@@ -20,9 +20,13 @@ if struct == 1:
     MD_traj = md.load('data/struct1/dims0001_fit-core.dcd',top = 'data/struct1/adk4ake.psf')
     view_angle_plot = torch.tensor([[0, 0, 0]])
 if struct == 2:
-    MD_traj = md.load('data/struct2/MD_traj2_short.dcd',top = 'data/struct2/DESRES-Trajectory_sarscov2-12212688-5-2-no-water.pdb')
-    view_angle_plot = torch.tensor([[-1.57, .2, 1.2]])
-
+    MD_traj1 = md.load('data/struct2/MDtraj_sarscov_1.dcd',
+                      top = 'data/struct2/DESRES-Trajectory_sarscov2-12212688-5-2-no-water.pdb')
+    MD_traj2 = md.load('data/struct2/MDtraj_sarscov_2.dcd',
+                      top = 'data/struct2/DESRES-Trajectory_sarscov2-12212688-5-2-no-water.pdb')
+    MD_traj = MD_traj1.join(MD_traj2)
+    del MD_traj1, MD_traj2
+    view_angle_plot = torch.tensor([[0, 0, 0.5]])
 
 ## Here we select the C-alpha positions
 indices = []
@@ -75,7 +79,7 @@ CTF_data_feat = {
 
 dataset_features = {
         'struct' : trajectory_ground_truth,
-        'n_imgs' : 400,
+        'n_imgs' : 4000,
         'orient_variability' : torch.Tensor([[0,2*np.pi], 
                                              [0,2*np.pi], 
                                              [0,2*np.pi]]),
@@ -238,16 +242,16 @@ preds_init_imgs = model.pred_images_without_CTF(test_inputs[:20, :-1]).detach()
 # we shall plot all the structures from the same viewing angle to better compare
 test_inputs_plot = test_inputs.clone()
 test_inputs_plot[:, -7:-4] = view_angle_plot.repeat(test_inputs.shape[0], 1) 
-struct_init = model.forward_disc_curve(test_inputs_plot[:20]).detach()
+struct_init = model.forward_disc_curve(test_inputs_plot).detach()
 
 #%%
 
 ### Training
 
-training_params = {'batch_size': 100,
+training_params = {'batch_size': 200,
           'shuffle': True,
           'max_epochs' : 4,
-          'learning_rate' : .1,
+          'learning_rate' : 2.,
           'momentum': .9}
 
 train_model(model, training_data, test_data, test_data_pointcloud, training_params)
@@ -270,10 +274,10 @@ disp_img_validation(preds_init_imgs, original_imgs, preds_imgs)
 # with the ground truth and the initialization.
 
 
-struct_preds = model.forward_disc_curve(test_inputs_plot[:5]).detach()
+struct_preds = model.forward_disc_curve(test_inputs_plot).detach()
 
 orientation_diffs_data_plot = view_angle_plot - structure_data.orientation
-struct_ground_truth = structure_data.discrete_curves(orientation_diffs_data_plot).detach()[test_idx][:5]
+struct_ground_truth = structure_data.discrete_curves(orientation_diffs_data_plot).detach()[test_idx]
 
-disp_struct_validation(struct_init, struct_ground_truth, struct_preds)
+disp_struct_validation(struct_init, struct_ground_truth, struct_preds[:10])
 
