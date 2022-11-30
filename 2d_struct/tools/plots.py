@@ -33,6 +33,6 @@ def disp_point_cloud(coords):
         xdata = coords[:,0]
         ydata = coords[:,1]
         zdata = coords[:,2]
-        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'coolwarm')
+        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'blues')
         ax.set_axis_off() 
         plt.show()
