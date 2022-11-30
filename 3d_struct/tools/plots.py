@@ -58,7 +58,7 @@ def disp_point_cloud(coords):
         xdata = coords[:,0]
         ydata = coords[:,1]
         zdata = coords[:,2]
-        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'blues')
+        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'Blues')
         ax.set_axis_off() 
         plt.show()
 
@@ -95,7 +95,7 @@ def disp_struct_validation(init_struct, ground_truth_struct, pred_struct):
         ydata = np.array(init_struct[i,:,1])
         zdata = np.array(init_struct[i,:,2])
         ax.plot3D(xdata, ydata, zdata, 'black')
-        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'blues')
+        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'Blues')
         ax.set_axis_off() 
         ax.set_title('Initialization')
         
@@ -105,7 +105,7 @@ def disp_struct_validation(init_struct, ground_truth_struct, pred_struct):
         ydata = np.array(ground_truth_struct[i,:,1])
         zdata = np.array(ground_truth_struct[i,:,2])
         ax.plot3D(xdata, ydata, zdata, 'black')
-        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'blues')
+        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'Blues')
         ax.set_axis_off() 
         ax.set_title('Original')
         
@@ -114,7 +114,7 @@ def disp_struct_validation(init_struct, ground_truth_struct, pred_struct):
         ydata = np.array(pred_struct[i,:,1])
         zdata = np.array(pred_struct[i,:,2])
         ax.plot3D(xdata, ydata, zdata, 'black')
-        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'blues')
+        ax.scatter(xdata, ydata, zdata,c = zdata, cmap = 'Blues')
         ax.set_axis_off() 
         ax.set_title('Prediction')
         
